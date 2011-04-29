@@ -1,0 +1,45 @@
+<!DOCTYPE html!>
+<html>
+<head>
+  <script src="/jquery.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    $(function(){
+      var i = 0;
+      var publish = function(){
+        $.post($('form').attr('action'), { type: $('#type').val(), data: '∞ + ' + i });
+        i = i + 1;
+      }
+      $('form').submit(function(e){
+        e.preventDefault();
+        $.post($('form').attr('action'), { type: $('#type').val(), data: $('#data').val() });
+      });
+      $('a#auto').click(function(e){
+        e.preventDefault();
+        if(confirm('Enable auto publish mode?')) {
+          setInterval(publish, 10000);
+        }
+      });
+    });
+  </script>
+</head>
+<body>
+  <form action="/test" method="post">
+    <h1>Publish to channel <em>test</em></h1>
+    <p>
+      <label for="type">Event type</label><br/>
+      <select name="type" id="type">
+        <option value="print">print</option>
+        <option value="alert">alert</option>
+      </select>
+    </p>
+    <p>
+      <label for="data">Message data</label><br/>
+      <textarea name="data" id="data" cols="30" rows="6"></textarea>
+    </p>
+    <p>
+      <input type="submit" value="Send" />
+    </p>
+  </form>
+  <a href="#" id="auto">Enable auto publish mode</a>
+</body>
+</html>

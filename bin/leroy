@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+
+case ARGV.last.to_s
+when 'console'
+  exec "irb -r #{File.expand_path('lib/leroy.rb')} --simple-prompt"
+when 'server'
+  load File.expand_path('lib/leroy/websocket.rb')
+when 'heartbeat'
+  require File.expand_path('lib/leroy.rb')
+  EM.run {
+    mq = MQ.new.fanout('leroy.test')
+    EM.add_periodic_timer(1) {
+      puts
+      time = Time.now
+      puts time
+      mq.publish(['print', time.to_s].to_json)
+    }
+  }
+when 'listen'
+  require File.expand_path('lib/leroy.rb')
+  uuid = UUID.new.generate
+  EM.run {
+    mq = MQ.new
+    mq.queue(uuid).bind(mq.fanout('leroy.test')).subscribe {|message|
+      puts message
+    }
+  }
+else
+  puts "Usage: leroy [command]"
+  puts
+  puts "Available commands:"
+  puts "  console   - Open an IRB console"
+  puts "  server    - Start the WebSocket server"
+  puts "  heartbeat - Send a heartbeat to the leroy.clock exchange every second"
+  puts "  listen    - Listen to messages on the leroy.clock exchange"
+end

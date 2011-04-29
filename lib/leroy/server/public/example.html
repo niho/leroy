@@ -1,0 +1,26 @@
+<!DOCTYPE html!>
+<html>
+<head>
+  <script src="/jquery.js" type="text/javascript"></script>
+  <script src="/push.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    $(function(){
+      var push = new Push('xxx', { port: 3000 });
+      var test_channel = push.subscribe('test');
+      test_channel.bind('print', function(data){
+        $('body').append($('<p>'+data+'</p>').fadeIn('slow'));
+      });
+      test_channel.bind('alert', function(data){
+        $('body').append($('<p class="alert">'+data+'</p>').fadeIn('slow'));
+      });
+    });
+  </script>
+  <style>
+  p { font: 14px Helvetica; background: #A4C639; color: #fff; border-radius: 10px; float: left; padding: 5px 7px; margin: 10px 5px; }
+  p.alert { background: #E52B50; }
+  </style>
+</head>
+<body>
+  
+</body>
+</html>
