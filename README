@@ -1,0 +1,31 @@
+Leroy
+
+A simple high performance pub/sub server using AMQP and Sinatra. Supports
+long-polling and WebSockets.
+
+Usage:
+
+  bin/leroy console   - Open an IRB console
+  bin/leroy server    - Start the WebSocket server
+  bin/leroy heartbeat - Send a heartbeat to the "test" channel every second
+  bin/leroy listen    - Print messages on the "test" channel to stdout
+
+To start the long-polling server you need to install the "thin" gem:
+
+  gem install thin
+  thin start
+
+Examples:
+
+/example.html  - An example long-polling client
+/publish.html  - A simple form for sending messages to the "test" channel
+
+WARNING
+
+This is just a very simple prototype to prove a point. Do not use in
+production!
+
+License
+
+Copyright (c) 2011 Niklas Holmgren
+Released under the MIT license.
